@@ -3,6 +3,7 @@ import Notiflix from 'notiflix';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const btnStart = document.querySelector('button[data-start]');
+const timerExpiryText = document.querySelector('.timer');
 const daysEl = document.querySelector('span[data-days]');
 const hoursEl = document.querySelector('span[data-hours]');
 const minutesEl = document.querySelector('span[data-minutes]');
@@ -49,14 +50,25 @@ const timer = {
     }
     this.isActive = true;
 
-    setInterval(() => {
+    const timerId = setInterval(() => {
       //   const futureTime = Date.now();
       const deltaTime = futureTime - Date.now();
       const TimeComponents = convertMs(deltaTime);
       console.log(
         `${TimeComponents.days}:${TimeComponents.hours}:${TimeComponents.minutes}:${TimeComponents.seconds}`
       );
+
       updateCounter(TimeComponents);
+
+      if (deltaTime < 0) {
+        clearInterval(timerId);
+        updateCounter({
+          days: addLeadingZero(0),
+          hours: addLeadingZero(0),
+          minutes: addLeadingZero(0),
+          seconds: addLeadingZero(0),
+        });
+      }
     }, 1000);
   },
 };
@@ -91,7 +103,7 @@ console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
 console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
 
 function updateCounter({ days, hours, minutes, seconds }) {
-  daysEl.textContent = `${days}:`;
+  daysEl.textContent = `${days}`;
   hoursEl.textContent = `${hours}`;
   minutesEl.textContent = `${minutes}`;
   secondsEl.textContent = `${seconds}`;

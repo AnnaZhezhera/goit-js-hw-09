@@ -4,16 +4,16 @@ import '../../node_modules/notiflix/dist/notiflix-3.2.5.min.css';
 const formSubmit = document.querySelector('.form');
 const inputEl = document.querySelector('input');
 
-function createPromise(position, delay) {
+function createPromise(pos, del) {
   const shouldResolve = Math.random() > 0.3;
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (shouldResolve) {
-        resolve({ position, delay });
+        resolve({ position: pos, delay: del });
       } else {
-        reject({ position, delay });
+        reject({ position: pos, delay: del });
       }
-    }, delay);
+    }, del);
   });
 }
 
